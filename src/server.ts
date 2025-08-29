@@ -1,12 +1,20 @@
 import fastify from "fastify";
+import multipart from "@fastify/multipart";
+import { convertFile } from "./router/convert-file";
 
-const server = fastify();
+const app = fastify();
 
-server.get("/", (req, res) => {
-  res.send("Hello World");
+app.register(multipart);
+
+app.get("/", (req, res) => {
+  res.send({
+    message: "Running",
+  });
 });
 
-server.listen({ port: 8080 }, (err, address) => {
+app.register(convertFile);
+
+app.listen({ port: 8080 }, (err, address) => {
   if (err) {
     console.error(err);
     process.exit(1);
